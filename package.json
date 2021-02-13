@@ -1,0 +1,23 @@
+{
+  "name": "netflix_planchecker",
+  "version": "1.0.0",
+  "description": "Netflix Plan Checker",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Ahda ZI",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yaelahda/netflix_planchecker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yaelahda/netflix_planchecker/issues"
+  },
+  "homepage": "https://github.com/yaelahda/netflix_planchecker",
+  "dependencies": {
+    "async-file": "^2.0.2",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^7.1.0"
+  }
+}
