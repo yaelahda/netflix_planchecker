@@ -6,7 +6,7 @@ Penggunaan:
 git clone https://github.com/yaelahda/netflix_planchecker
 cd netflix_planchecker
 npm i
-npm index.js
+node index.js
 ```
 
 Paste list akunmu di file akun.txt dengan format
